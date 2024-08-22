@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Cadastro from './components/Cadastro';
+import ContatosList from './components/ContatosList';
 
 export default function App() {
+  const [contatos, setContatos] = useState([]);
+
+  const adicionarContato = (contato) => {
+    setContatos([...contatos, contato]);
+  };
+
+  const Stack = createNativeStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Cadastro">
+          {(props) => <Cadastro {...props} adicionarContato={adicionarContato} />}
+        </Stack.Screen>
+        <Stack.Screen name="ContatosList">
+          {(props) => <ContatosList {...props} contatos={contatos} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
